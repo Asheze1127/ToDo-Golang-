@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { SubmitAuth } from "@/lib/auth";
+import { SubmitLoginAuth, SubmitSignupAuth } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 interface AuthFormProps {
     type: "login" | "signup";
@@ -17,7 +18,9 @@ export default function AuthForm(
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const handleLoginSubmit = () => SubmitAuth(email, password, setIsLoading, type);
+    const router = useRouter();
+    const handleLoginSubmit = () => SubmitLoginAuth(email, password, setIsLoading, () => router.push("/todos"));
+    const handleSignupSubmit = () => SubmitSignupAuth(email, password, setIsLoading, () => router.push("/todos"));
     return (
         <Card className="w-full">
             <CardHeader>
@@ -26,7 +29,9 @@ export default function AuthForm(
                     Enter your email below to {type === "login" ? "login" : "sign up"} to your account
                 </CardDescription>
                 <CardAction>
-                    <Button variant="link">{type === "login" ? "Sign Up" : "Login"}</Button>
+                    <Button variant="link" onClick={() => router.push(type === "login" ? "/signup" : "/login")}>
+                        {type === "login" ? "Sign Up" : "Login"}
+                    </Button>
                 </CardAction>
             </CardHeader>
             <CardContent>
@@ -61,12 +66,12 @@ export default function AuthForm(
                 </form>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-                <Button type="submit" className="w-full" onClick={handleLoginSubmit}>
+                <Button type="submit" className="w-full" onClick={type === "login" ? handleLoginSubmit : handleSignupSubmit}>
                     {isLoading && <Spinner />}
                     {type === "login" ? "Login" : "Sign up"}
                 </Button>
                 <Button variant="outline" className="w-full">
-                    {type === "login" ? "Sign up with Google" : "Login with Google"}
+                    {type === "login" ? "Login with Google" : "Sign up with Google"}
                 </Button>
             </CardFooter>
         </Card>
