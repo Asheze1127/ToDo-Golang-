@@ -7,6 +7,7 @@ import { ChevronDownIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent,PopoverTrigger } from "@/components/ui/popover"
 import { useState } from "react"
+import { Textarea } from "../ui/textarea"
 
 export default function TodoForm() {
     const [startDateOpen, setStartDateOpen] = useState(false)
@@ -23,7 +24,7 @@ export default function TodoForm() {
         <Field>
             <Label htmlFor="title">Title</Label>
             <Input id="title" type="text" placeholder="Enter your todo" onChange={(e) => setTitle(e.target.value)} />
-            <Input id="description" type="text" placeholder="Enter your todo" onChange={(e) => setDescription(e.target.value)} />
+            <Textarea id="description" placeholder="Enter your todo" onChange={(e) => setDescription(e.target.value)} />
             <Label htmlFor="start_date">start date</Label>
                 <div className="flex gap-4">
                     <div className="flex flex-col gap-3">
